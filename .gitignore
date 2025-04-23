@@ -1,0 +1,20 @@
+# Node.js
+node_modules/
+.env
+
+# NeDB local databases
+backend/db/
+
+
+
+# Build outputs
+frontend/build/
+
+# Logs
+*.log
+
+# OS/IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
