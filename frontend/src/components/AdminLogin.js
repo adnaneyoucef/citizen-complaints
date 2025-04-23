@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Box, Button, TextField, Typography, Paper, Alert, Stack } from '@mui/material';
+import AnimatedBackground from '../AnimatedBackground';
+
+import { useTheme } from '@mui/material';
 
 function AdminLogin() {
+  const theme = useTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -25,24 +30,147 @@ function AdminLogin() {
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: '60px auto', background: '#fff', padding: 24, borderRadius: 8, boxShadow: '0 2px 8px #ccc' }}>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 8 }}>
-        <button type="button" onClick={() => navigate('/')} style={{ background: '#888', color: '#fff', border: 'none', padding: '6px 16px', borderRadius: 4, fontSize: 15 }}>العودة للرئيسية</button>
-      </div>
-      <h2 style={{ textAlign: 'center', marginBottom: 24 }}>دخول المسؤول</h2>
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: 16 }}>
-          <label>البريد الإلكتروني</label>
-          <input type="email" value={email} onChange={e => setEmail(e.target.value)} required style={{ width: '100%', padding: 8, fontSize: 16 }} />
-        </div>
-        <div style={{ marginBottom: 16 }}>
-          <label>كلمة المرور</label>
-          <input type="password" value={password} onChange={e => setPassword(e.target.value)} required style={{ width: '100%', padding: 8, fontSize: 16 }} />
-        </div>
-        <button type="submit" style={{ width: '100%', padding: 12, fontSize: 18, background: '#1976d2', color: '#fff', border: 'none', borderRadius: 4 }}>دخول</button>
-        {error && <div style={{ color: 'red', marginTop: 16 }}>{error}</div>}
-      </form>
-    </div>
+    <Box sx={{
+      minHeight: '100vh',
+      bgcolor: theme.palette.mode === 'dark' ? '#181c1f' : '#f5f8f9',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      py: 6
+    }}>
+      <Paper sx={{
+        p: { xs: 3, sm: 5 },
+        borderRadius: 2,
+        maxWidth: 480,
+        minHeight: 600,
+        width: '100%',
+        bgcolor: theme.palette.mode === 'dark' ? '#23272a' : '#fff',
+        boxShadow: 'none',
+        mx: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        height: '100%',
+      }}>
+        <Box sx={{ position: 'relative', width: '100%' }}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => navigate('/')}
+            sx={{
+              position: 'absolute',
+              left: '15%',
+              top: 0,
+              transform: 'translate(5%, -120%)',
+              fontSize: 20,
+              fontWeight: 700,
+              py: 1.7,
+              borderRadius: 2,
+              backgroundColor: theme.palette.mode === 'dark' ? '#2ecc71' : '#d8f5c7',
+              color: theme.palette.mode === 'dark' ? '#fff' : '#183a5a',
+              boxShadow: 'none',
+              border: '2px solid transparent',
+              '&:hover': {
+                backgroundColor: theme.palette.mode === 'dark' ? '#27ae60' : '#c2eeba',
+                boxShadow: 'none',
+                border: theme.palette.mode === 'dark' ? '2px solid #fff' : '2px solid #27ae60'
+              }
+            }}
+          >
+            منصة شكاوى المواطنين
+          </Button>
+          <Stack spacing={3} alignItems="center" sx={{ flexGrow: 1, width: '100%', justifyContent: 'center' }}>
+            <Typography variant="h4" fontWeight={700} align="center" gutterBottom sx={{ color: theme.palette.mode === 'dark' ? '#fff' : '#183a5a' }}>
+              دخول المسؤول
+            </Typography>
+            <Typography variant="body1" align="center" sx={{ color: theme.palette.mode === 'dark' ? '#bbb' : '#6b7a90' }}>
+              الرجاء إدخال البريد الإلكتروني وكلمة المرور الخاصة بك
+            </Typography>
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ width: '100%' }}>
+              <Stack spacing={2}>
+                <TextField
+                  label="البريد الإلكتروني"
+                  type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  required
+                  fullWidth
+                  variant="outlined"
+                  sx={{
+                    borderRadius: 2,
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: 2,
+                      backgroundColor: theme.palette.mode === 'dark' ? '#23272a' : '#f5f6fa',
+                      color: theme.palette.mode === 'dark' ? '#f5f6fa' : '#23272a',
+                    },
+                    '& .MuiOutlinedInput-input': {
+                      color: theme.palette.mode === 'dark' ? '#f5f6fa' : '#23272a',
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: theme.palette.mode === 'dark' ? '#bbb' : '#6b7a90',
+fontWeight: 500,
+                    },
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: theme.palette.mode === 'dark' ? '#444' : '#e0e3e7',
+                    }
+                  }}
+                />
+                <TextField
+                  label="كلمة المرور"
+                  type="password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  required
+                  fullWidth
+                  variant="outlined"
+                  sx={{
+                    borderRadius: 2,
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: 2,
+                      backgroundColor: theme.palette.mode === 'dark' ? '#23272a' : '#f5f6fa',
+                      color: theme.palette.mode === 'dark' ? '#f5f6fa' : '#23272a',
+                    },
+                    '& .MuiOutlinedInput-input': {
+                      color: theme.palette.mode === 'dark' ? '#f5f6fa' : '#23272a',
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: theme.palette.mode === 'dark' ? '#bbb' : '#6b7a90',
+fontWeight: 500,
+                    },
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: theme.palette.mode === 'dark' ? '#444' : '#e0e3e7',
+                    }
+                  }}
+                />
+                <Button
+                  type="submit"
+                  variant="contained"
+                  fullWidth
+                  sx={{
+                    fontSize: 20,
+                    fontWeight: 700,
+                    py: 1.7,
+                    borderRadius: 2,
+                    backgroundColor: theme.palette.mode === 'dark' ? '#2ecc71' : '#d8f5c7',
+                    color: theme.palette.mode === 'dark' ? '#fff' : '#183a5a',
+                    boxShadow: 'none',
+                    border: '2px solid transparent',
+                    '&:hover': {
+                      backgroundColor: theme.palette.mode === 'dark' ? '#27ae60' : '#c2eeba',
+                      boxShadow: 'none',
+                      border: theme.palette.mode === 'dark' ? '2px solid #fff' : '2px solid #27ae60'
+                    }
+                  }}
+                >
+                  دخول
+                </Button>
+                {error && <Alert severity="error">{error}</Alert>}
+              </Stack>
+            </Box>
+          </Stack>
+        </Box>
+      </Paper>
+    </Box>
   );
 }
 
