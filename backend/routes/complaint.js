@@ -46,9 +46,24 @@ router.post('/', upload.single('attachment'), (req, res) => {
     createdAt: new Date(),
     updatedAt: new Date()
   };
-  complaintDB.insert(complaint, (err, newDoc) => {
-    if (err) return res.status(500).json({ message: 'Server error', error: err.message });
-    res.status(201).json(newDoc);
+  // Check for identical complaint first
+  complaintDB.findOne({ name, email, title, type }, (findErr, existing) => {
+    if (findErr) return res.status(500).json({ message: 'Server error', error: findErr.message });
+    if (existing) {
+      // Remove the old complaint
+      complaintDB.remove({ _id: existing._id }, {}, (removeErr) => {
+        if (removeErr) return res.status(500).json({ message: 'Server error', error: removeErr.message });
+        complaintDB.insert(complaint, (err, newDoc) => {
+          if (err) return res.status(500).json({ message: 'Server error', error: err.message });
+          res.status(201).json(newDoc);
+        });
+      });
+    } else {
+      complaintDB.insert(complaint, (err, newDoc) => {
+        if (err) return res.status(500).json({ message: 'Server error', error: err.message });
+        res.status(201).json(newDoc);
+      });
+    }
   });
 });
 

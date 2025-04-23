@@ -5,7 +5,8 @@ node_modules/
 # NeDB local databases
 backend/db/
 
-
+# Backend
+scripts/create-admin.js
 
 # Build outputs
 frontend/build/
