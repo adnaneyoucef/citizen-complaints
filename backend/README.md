@@ -1,5 +1,9 @@
 # Backend - Gestion des réclamations citoyennes
 
+## Installation de Node.js (Windows)
+
+(Si ce n'est pas déjà fait, voir les instructions dans le README global.)
+
 ## Stack
 - Node.js + Express
 - NeDB (base locale, fichiers .db)
@@ -10,15 +14,53 @@
 - `routes/` : Routes API (utilisateurs, réclamations)
 - `index.js` : Point d’entrée serveur
 
-## Démarrage
-1. Installer les dépendances : `npm install`
-2. Lancer le serveur : `npm run dev`
+## Démarrage rapide (démo)
 
-### Déploiement sur Render
-- Créez un service web sur https://render.com/ (Node.js)
-- Ajoutez vos variables d'environnement si besoin (JWT_SECRET, etc.)
-- Les fichiers NeDB sont stockés dans `backend/db/` (persistance automatique)
-- Le backend sera accessible via une URL publique Render
+**Pour lancer le projet sur un nouvel ordinateur :**
+
+1. Clonez ce dépôt (`git clone ...`).
+2. Ouvrez un terminal dans le dossier du projet.
+3. Exécutez : `start-demo-full.bat`
+   - Ce script :
+     - Crée automatiquement `backend/.env` si besoin (avec des valeurs par défaut).
+     - Installe toutes les dépendances backend & frontend (`npm install`).
+     - Crée un admin (si inexistant) via `scripts/create-admin.js`.
+     - Démarre le backend (port 5000) et le frontend (port 3000).
+   - Ouvrez [http://localhost:3000](http://localhost:3000) dans votre navigateur pour accéder à l’appli.
+
+**Dépendances principales :**
+- Node.js, npm
+- [nodemailer](https://www.npmjs.com/package/nodemailer) (envoi d’e-mails)
+- Voir `package.json` pour la liste complète.
+
+---
+
+## Démarrage manuel (avancé)
+
+1. Naviguer dans le dossier `backend`:
+   ```sh
+   cd backend
+   ```
+2. Installer les dépendances :
+   ```sh
+   npm install
+   ```
+3. Créer le fichier `.env` dans le dossier `backend` (exemple :)
+   ```env
+   PORT=5000
+   MONGO_URI=mongodb://localhost:27017/citizen-complaints
+   JWT_SECRET=changeme123
+   MAIL_USER=youraddress@gmail.com
+   MAIL_PASS=your-app-password
+   ```
+4. Créer un admin via le script :
+   ```sh
+   node scripts/create-admin.js
+   ```
+5. Lancer le backend :
+   ```sh
+   npm run dev
+   ```
 
 ### Script création admin
 - Utilisez `node scripts/create-admin.js` pour générer un compte admin initial (voir le script pour modifier email/mot de passe).
@@ -45,15 +87,10 @@
 - Les routes publiques : création de réclamation, login, register
 - Les routes protégées (admin) : voir/modifier toutes les réclamations
 
-### Script création admin
-- Lancer `node scripts/create-admin.js` pour générer un compte admin initial
-- Modifier le script pour changer l’email/mot de passe par défaut
-
 ---
 
 ## Notes complémentaires
 - Les données sont stockées dans des fichiers NeDB (`backend/db/`)
-- Le backend peut être déployé sur Render (voir section plus haut)
 - Les pièces jointes sont stockées dans `backend/uploads/` et accessibles via `/uploads/nomdufichier`
 
 ## Sécurité
