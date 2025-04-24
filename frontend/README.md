@@ -1,23 +1,45 @@
 # Frontend - Gestion des réclamations citoyennes
 
+## Installation de Node.js (Windows)
+
+(Si ce n'est pas déjà fait, voir les instructions dans le README global.)
+
 ## Stack
 - React
 - Axios
 - Material-UI (optionnel)
 
-## Démarrage
-1. Installer les dépendances : `npm install`
-2. Lancer l'application : `npm start`
-3. L'app est accessible sur `http://localhost:3000`
+## Démarrage rapide (démo)
+
+**Pour lancer le projet sur un nouvel ordinateur :**
+
+1. Clonez ce dépôt (`git clone ...`).
+2. Ouvrez un terminal à la racine du projet.
+3. Exécutez : `start-demo-full.bat`
+   - Le script installe toutes les dépendances (backend & frontend), lance les serveurs, et prépare tout automatiquement.
+   - L'application sera accessible sur [http://localhost:3000](http://localhost:3000) dans votre navigateur.
+
+---
+
+## Démarrage manuel (avancé)
+
+1. Naviguer dans le dossier `frontend` :
+   ```sh
+   cd frontend
+   ```
+2. Installer les dépendances :
+   ```sh
+   npm install
+   ```
+3. Lancer l'application :
+   ```sh
+   npm run start
+   ```
+4. L'app est accessible sur [http://localhost:3000](http://localhost:3000)
 
 ## Configuration de l'API
 - Par défaut, les appels API pointent vers `http://localhost:5000` (backend local)
-- Pour déploiement, modifiez l'URL de l'API dans le code (ex: `.env` ou directement dans les fichiers Axios) pour pointer vers l'URL Render du backend
-
-## Déploiement Netlify
-1. Générer le build : `npm run build`
-2. Uploadez le dossier `build/` sur https://app.netlify.com/ (drag & drop ou GitHub)
-3. Configurez l'URL de l'API pour pointer vers le backend public
+- Pour déploiement, modifiez l'URL de l'API dans le code (ex: `.env` ou directement dans les fichiers Axios) pour pointer vers l'URL la nouvelle URL du backend
 
 ## Fonctionnalités principales
 - Soumission de réclamation (citoyen)
