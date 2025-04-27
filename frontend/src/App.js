@@ -8,22 +8,28 @@ import ThemeModeProvider from './ThemeContext';
 import ModeSwitch from './ModeSwitch';
 import { CssBaseline, Box } from '@mui/material';
 
+import AnimatedBackground from './components/AnimatedBackground';
+
 function App() {
   return (
-    <ThemeModeProvider>
-      <CssBaseline />
-      <BrowserRouter>
-        <Box sx={{ position: 'fixed', top: 10, right: 10, zIndex: 1300 }}>
-          <ModeSwitch />
-        </Box>
-        <Routes>
-          <Route path="/" element={<FrontendLanding />} />
-          <Route path="/complaint" element={<ComplaintForm />} />
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        </Routes>
-      </BrowserRouter>
-    </ThemeModeProvider>
+    <>
+      <AnimatedBackground />
+      <ThemeModeProvider>
+        <CssBaseline />
+        <BrowserRouter>
+          <Box sx={{ position: 'fixed', top: 10, right: 10, zIndex: 1300, backgroundColor: 'transparent' }}>
+            <ModeSwitch />
+          </Box>
+          <Routes>
+            <Route path="/" element={<FrontendLanding />} />
+            <Route path="/complaint" element={<ComplaintForm />} />
+            <Route path="/complaint/form" element={<ComplaintForm />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          </Routes>
+        </BrowserRouter>
+      </ThemeModeProvider>
+    </>
   );
 }
 

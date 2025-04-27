@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
+import AnimatedBackground from './AnimatedBackground';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, TextField, Typography, Paper, Alert, Stack } from '@mui/material';
-import AnimatedBackground from '../AnimatedBackground';
 
 function ComplaintForm() {
   const [complaints, setComplaints] = useState([]);
@@ -112,39 +112,82 @@ function ComplaintForm() {
   };
 
   return (
-    <AnimatedBackground>
-      <Box sx={{ minHeight: '100vh', bgcolor: theme => theme.palette.mode === 'dark' ? '#181c1f' : '#f5f8f9', display: 'flex', alignItems: 'center', justifyContent: 'center', py: 6 }}>
-        <Paper sx={{ p: { xs: 3, sm: 5 }, borderRadius: 2, maxWidth: 420, width: '100%', bgcolor: theme => theme.palette.mode === 'dark' ? '#23272a' : '#fff', boxShadow: 'none', mx: 2 }}>
-          <Stack spacing={3} alignItems="center">
+    <>
+      <AnimatedBackground sx={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 0 }} />
+      <Box
+        sx={{
+          bgcolor: 'transparent',
+          minHeight: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: { xs: 'flex-start', md: 'center' },
+          px: 1,
+          py: { xs: 2, md: 0 },
+          width: '100%',
+          overflowX: 'auto',
+          position: 'relative',
+          zIndex: 1
+        }}
+      >
+        
+        <Paper
+          sx={{
+            overflowX: 'auto',
+            p: { xs: 2, md: 4 },
+            borderRadius: 2,
+            minWidth: 360,
+            maxWidth: 480,
+            width: '100%',
+            mx: 'auto',
+            boxShadow: '0 0 32px 0 rgba(39, 174, 96, 0.18), 0 2px 8px 0 rgba(0,0,0,0.08)',
+            background: theme => theme.palette.mode === 'dark' ? 'rgba(24, 28, 31, 0.98)' : 'rgba(255, 255, 255, 0.97)',
+            backdropFilter: 'blur(12px) saturate(1.3)',
+            border: '1.5px solid',
+            borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(39,174,96,0.13)' : 'rgba(39,174,96,0.09)',
+            transition: 'background 0.5s, box-shadow 0.5s',
+            zIndex: 1,
+            position: 'relative',
+            maxHeight: { xs: 'none', md: 'calc(100vh - 32px)' },
+            overflowY: { xs: 'visible', md: 'auto' }
+          }}
+        >
+          <Stack spacing={3} alignItems="center" sx={{ width: '100%' }}>
             <Button
-              variant="outlined"
-              fullWidth
+              variant="contained"
+              color="secondary"
+              onClick={() => navigate('/')}
               sx={{
+                fontSize: 20,
+                fontWeight: 700,
+                py: 1.7,
                 borderRadius: 2,
-                fontWeight: 600,
-                fontSize: 18,
-                backgroundColor: theme => theme.palette.mode === 'dark' ? '#23272a' : '#f5f6fa',
+                backgroundColor: theme => theme.palette.mode === 'dark' ? '#2ecc71' : '#d8f5c7',
                 color: theme => theme.palette.mode === 'dark' ? '#fff' : '#183a5a',
                 boxShadow: 'none',
                 border: '2px solid transparent',
                 '&:hover': {
-                  backgroundColor: theme => theme.palette.mode === 'dark' ? '#23272a' : '#e5ffe5',
-                  boxShadow: 'none',
-                  border: theme => theme.palette.mode === 'dark' ? '2px solid #fff' : '2px solid #27ae60'
+                  textShadow: '0 0 3px #27ae60',
+                  backgroundColor: theme => theme.palette.mode === 'dark' ? '#27ae60' : '#c2eeba',
+                  border: theme => theme.palette.mode === 'dark' ? '2px solid #fff' : '2px solid #27ae60',
+                },
+                '&:active, &:focus-visible': {
+                  boxShadow: theme => theme.palette.mode === 'dark'
+                    ? '0 0 0 4px rgba(46, 204, 113, 0.28)'
+                    : '0 0 0 4px rgba(216, 245, 199, 0.45)'
                 }
               }}
-              onClick={() => navigate('/')}
             >
               منصة شكاوى المواطنين
             </Button>
-            <Typography variant="h4" fontWeight={700} align="center" gutterBottom sx={{ color: theme => theme.palette.mode === 'dark' ? '#fff' : '#183a5a' }}>
-              نموذج الشكوى
-            </Typography>
-            <Typography variant="body1" align="center" sx={{ color: theme => theme.palette.mode === 'dark' ? '#bbb' : '#6b7a90' }}>
-              الرجاء إدخال بيانات الشكوى بدقة
-            </Typography>
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ width: '100%' }}>
-              <Stack spacing={2}>
+
+          <Typography variant="h4" fontWeight={700} align="center" gutterBottom sx={{ color: (theme) => theme.palette.mode === 'dark' ? '#fff' : '#183a5a' }}>
+            نموذج الشكوى
+          </Typography>
+          <Typography variant="body1" align="center" sx={{ color: (theme) => theme.palette.mode === 'dark' ? '#bbb' : '#6b7a90' }}>
+            الرجاء إدخال بيانات الشكوى بدقة
+          </Typography>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ width: '100%' }}>
+            <Stack spacing={2}>
               <TextField
                 sx={{
                   borderRadius: 2,
@@ -218,7 +261,20 @@ function ComplaintForm() {
                 variant="outlined"
                 component="label"
                 fullWidth
-                sx={{ borderRadius: 2, fontWeight: 600 }}
+                sx={{
+                  borderRadius: 2,
+                  fontWeight: 600,
+                  '&:hover': {
+                    textShadow: '0 0 3px #27ae60',
+                    backgroundColor: theme => theme.palette.mode === 'dark' ? '#27ae60' : '#c2eeba',
+                    border: theme => theme.palette.mode === 'dark' ? '2px solid #fff' : '2px solid #27ae60',
+                    '&:active, &:focus-visible': {
+                      boxShadow: theme => theme.palette.mode === 'dark'
+                        ? '0 0 0 4px rgba(46, 204, 113, 0.28)'
+                        : '0 0 0 4px rgba(216, 245, 199, 0.45)'
+                    }
+                  }
+                }}
               >
                 مرفقات
                 <input
@@ -242,29 +298,34 @@ function ComplaintForm() {
                   boxShadow: 'none',
                   border: '2px solid transparent',
                   '&:hover': {
+                    textShadow: '0 0 3px #27ae60',
                     backgroundColor: theme => theme.palette.mode === 'dark' ? '#27ae60' : '#c2eeba',
-                    boxShadow: 'none',
-                    border: theme => theme.palette.mode === 'dark' ? '2px solid #fff' : '2px solid #27ae60'
+                    border: theme => theme.palette.mode === 'dark' ? '2px solid #fff' : '2px solid #27ae60',
+                    '&:active, &:focus-visible': {
+                      boxShadow: theme => theme.palette.mode === 'dark'
+                        ? '0 0 0 4px rgba(46, 204, 113, 0.28)'
+                        : '0 0 0 4px rgba(216, 245, 199, 0.45)'
+                    }
                   }
                 }}
               >
                 {checkingDuplicate ? 'جاري التحقق...' : isDuplicate ? 'لا يمكنك إرسال شكوى مكررة' : 'إرسال الشكوى'}
               </Button>
-              {isDuplicate && (
-                <Alert severity="warning">هذه الشكوى موجودة بالفعل في لوحة الإدارة ولا يمكن إرسالها مرة أخرى.</Alert>
-              )}
-              {hasRepeatedFields() && (
-                <Alert severity="warning">لا يمكن تكرار نفس القيمة في أكثر من حقل.</Alert>
-              )}
-              {success && <Alert severity="success">تم إرسال الشكوى بنجاح!</Alert>}
-              {error && <Alert severity="error">{error}</Alert>}
             </Stack>
-           </Box>
-         </Stack>
-       </Paper>
-     </Box>
-   </AnimatedBackground>
- );
+            {isDuplicate && (
+              <Alert severity="warning">هذه الشكوى موجودة بالفعل في لوحة الإدارة ولا يمكن إرسالها مرة أخرى.</Alert>
+            )}
+            {hasRepeatedFields() && (
+              <Alert severity="warning">لا يمكن تكرار نفس القيمة في أكثر من حقل.</Alert>
+            )}
+            {success && <Alert severity="success">تم إرسال الشكوى بنجاح!</Alert>}
+            {error && <Alert severity="error">{error}</Alert>}
+          </Box>
+        </Stack>
+      </Paper>
+    </Box>
+    </>
+  );
 }
 
 export default ComplaintForm;

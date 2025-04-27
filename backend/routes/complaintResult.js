@@ -7,17 +7,24 @@ const { sendMail } = require('../utils/mailer');
 router.post('/:id/result', async (req, res) => {
   const { id } = req.params;
   const { result } = req.body;
+  console.log('[POST /:id/result] Incoming request:', { id, result });
   if (!result || !result.trim()) {
+    console.warn('[POST /:id/result] Missing result in request body');
     return res.status(400).json({ message: 'نتيجة الشكوى مطلوبة.' });
   }
   try {
-    // Get the complaint to fetch email and status
     complaintDB.findOne({ _id: id }, async (err, complaint) => {
-      if (err || !complaint) return res.status(404).json({ message: 'لم يتم العثور على الشكوى.' });
-      // Save the result
+      if (err || !complaint) {
+        console.error('[POST /:id/result] Complaint not found or DB error:', err, 'Complaint:', complaint);
+        return res.status(404).json({ message: 'لم يتم العثور على الشكوى.' });
+      }
+      console.log('[POST /:id/result] Found complaint:', complaint);
       complaintDB.update({ _id: id }, { $set: { result } }, {}, async (updateErr, numAffected) => {
-        if (updateErr) return res.status(500).json({ message: 'خطأ في حفظ النتيجة', error: updateErr.message });
-        // Send email to the user
+        if (updateErr) {
+          console.error('[POST /:id/result] Error updating complaint:', updateErr);
+          return res.status(500).json({ message: 'خطأ في حفظ النتيجة', error: updateErr.message });
+        }
+        console.log('[POST /:id/result] Updated complaint with result. numAffected:', numAffected);
         try {
           const statusAr = {
             'pending': 'قيد الانتظار',
@@ -45,19 +52,25 @@ router.post('/:id/result', async (req, res) => {
               </div>
             </div>
           `;
+          if (!complaint.email) {
+            console.error('[POST /:id/result] Complaint has no email:', complaint);
+          }
           await sendMail({
             to: complaint.email,
             subject: 'نتيجة الشكوى الخاصة بك',
             text: `السلام عليكم ${complaint.name || ''}\n\nتم تحديث حالة الشكوى الخاصة بك إلى: ${statusAr[complaint.status] || complaint.status}\nعنوان الشكوى: ${complaint.title || '-'}\nنوع الشكوى: ${complaint.type || '-'}\n\nنتيجة الإدارة: ${result}\n\nيمكنك زيارة بوابة الشكاوى: ${complaintPortalUrl}\n\nمع تحيات فريق الشكاوى.`,
             html
           });
+          console.log('[POST /:id/result] Email sent to:', complaint.email);
         } catch (mailErr) {
+          console.error('[POST /:id/result] Error sending email:', mailErr);
           return res.status(500).json({ message: 'تم حفظ النتيجة لكن فشل إرسال البريد الإلكتروني', error: mailErr.message });
         }
         res.json({ message: 'تم حفظ نتيجة الشكوى وإرسالها عبر البريد الإلكتروني بنجاح.' });
       });
     });
   } catch (e) {
+    console.error('[POST /:id/result] Unexpected error:', e);
     res.status(500).json({ message: 'حدث خطأ غير متوقع', error: e.message });
   }
 });

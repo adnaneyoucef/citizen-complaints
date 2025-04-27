@@ -1,0 +1,52 @@
+/* AnimatedBackground.css: CSS keyframes for morphing SVG waves */
+.morphing-waves-bg {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.wave {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
+.scales-pattern {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Keyframes for morphing each wave path */
+@keyframes wave1 {
+  0%   { d: path('M0,400 Q360,50 720,400 T1440,400 V600 H0 Z'); }
+  50%  { d: path('M0,400 Q360,650 720,400 T1440,400 V600 H0 Z'); }
+  100% { d: path('M0,400 Q360,50 720,400 T1440,400 V600 H0 Z'); }
+}
+@keyframes wave2 {
+  0%   { d: path('M0,400 Q360,650 720,400 T1440,400 V600 H0 Z'); }
+  50%  { d: path('M0,400 Q360,50 720,400 T1440,400 V600 H0 Z'); }
+  100% { d: path('M0,400 Q360,650 720,400 T1440,400 V600 H0 Z'); }
+}
+@keyframes wave3 {
+  0%   { d: path('M0,400 Q360,200 720,400 T1440,400 V600 H0 Z'); }
+  50%  { d: path('M0,400 Q360,600 720,400 T1440,400 V600 H0 Z'); }
+  100% { d: path('M0,400 Q360,200 720,400 T1440,400 V600 H0 Z'); }
+}
+@keyframes wave4 {
+  0%   { d: path('M0,400 Q360,600 720,400 T1440,400 V600 H0 Z'); }
+  50%  { d: path('M0,400 Q360,200 720,400 T1440,400 V600 H0 Z'); }
+  100% { d: path('M0,400 Q360,600 720,400 T1440,400 V600 H0 Z'); }
+}
+
+.wave-path1 { animation: wave1 10s infinite linear; }
+.wave-path2 { animation: wave2 13s infinite linear; }
+.wave-path3 { animation: wave3 18s infinite linear; }
+.wave-path4 { animation: wave4 24s infinite linear; }
