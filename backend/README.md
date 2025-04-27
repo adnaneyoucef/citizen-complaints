@@ -4,6 +4,85 @@
 
 (Si ce n'est pas déjà fait, voir les instructions dans le README global.)
 
+## Fonctionnalités principales (avec exemples de code)
+
+### 1. Soumission d'une réclamation (citoyen)
+- **Explication :** Route ouverte à tous pour déposer une réclamation avec pièce jointe.
+- **Exemple de code (extrait de `routes/complaint.js`) :**
+  ```js
+  // Submit a complaint (open to all, with file upload)
+  router.post('/', upload.single('attachment'), (req, res) => {
+    const { name, email, title, type, details } = req.body;
+    const attachment = req.file ? req.file.filename : undefined;
+    const complaint = { name, email, title, type, details, attachment, status: 'submitted', createdAt: new Date(), updatedAt: new Date() };
+    // ...
+    complaintDB.insert(complaint, (err, newDoc) => {
+      if (err) return res.status(500).json({ message: 'Server error', error: err.message });
+      res.status(201).json(newDoc);
+    });
+  });
+  ```
+
+### 2. Authentification admin avec JWT
+- **Explication :** Middleware pour sécuriser les routes admin.
+- **Exemple de code :**
+  ```js
+  // Middleware: Auth
+  function auth(req, res, next) {
+    const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).json({ message: 'No token' });
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = decoded;
+      next();
+    } catch {
+      res.status(401).json({ message: 'Invalid token' });
+    }
+  }
+  ```
+
+### 3. Envoi d'e-mails automatiques (HTML)
+- **Explication :** Lorsqu'un admin envoie un résultat, un email HTML stylisé est généré et envoyé au citoyen.
+- **Exemple de code (extrait de `routes/complaintResult.js`) :**
+  ```js
+  const html = `
+    <div style="font-family: 'Tajawal', Arial, sans-serif; background: #f9fafb; padding: 24px;">
+      <div style="max-width: 600px; margin: auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #eee; padding: 32px;">
+        <h2 style="color: #183a5a;">مرحباً ${complaint.name || ''},</h2>
+        <p style="font-size: 18px; color: #333;">تم تحديث حالة الشكوى الخاصة بك.</p>
+        ...
+      </div>
+    </div>
+  `;
+  await sendMail({
+    to: complaint.email,
+    subject: 'نتيجة الشكوى الخاصة بك',
+    text: `السلام عليكم ...`,
+    html
+  });
+  ```
+
+### 4. Nettoyage automatique des doublons
+- **Explication :** Endpoint pour supprimer les réclamations en double.
+- **Exemple de code (extrait de `routes/cleanup.js`) :**
+  ```js
+  router.post('/cleanup-complaints', async (req, res) => {
+    // ...logique de suppression des doublons...
+    res.json({ message: 'Doublons supprimés.' });
+  });
+  ```
+
+### 5. Gestion des utilisateurs (création admin)
+- **Explication :** Script pour créer un admin si aucun n'existe.
+- **Exemple de code (extrait de `scripts/create-admin.js`) :**
+  ```js
+  if (!admin) {
+    const hashed = await bcrypt.hash(password, 10);
+    await userDB.insert({ email, password: hashed, role: 'admin' });
+    console.log('Admin créé:', email);
+  }
+  ```
+
 ## Stack
 - Node.js + Express
 - NeDB (base locale, fichiers .db)
@@ -53,6 +132,13 @@
    MAIL_USER=youraddress@gmail.com
    MAIL_PASS=your-app-password
    ```
+
+### 📧 Configuration email (Gmail App Password recommandé)
+- Activez la validation en deux étapes sur https://myaccount.google.com/security
+- Générez un App Password sur https://myaccount.google.com/apppasswords (choisir "Mail" et "Other (NodeMailer)")
+- Copiez le mot de passe généré dans `MAIL_PASS`
+- Utilisez votre adresse Gmail complète dans `MAIL_USER`
+
 4. Créer un admin via le script :
    ```sh
    node scripts/create-admin.js

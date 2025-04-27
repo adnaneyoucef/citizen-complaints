@@ -1,0 +1,24 @@
+/* Animated gradient background for all pages */
+.animated-bg {
+  background: transparent !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(270deg, #e0ffe8, #c1eaff, #ffe0fa, #e0ffe8);
+  background-size: 600% 600%;
+  animation: gradientLoop 16s ease-in-out infinite;
+}
+
+body, #root {
+  background: transparent !important;
+}
+
+@keyframes gradientLoop {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}

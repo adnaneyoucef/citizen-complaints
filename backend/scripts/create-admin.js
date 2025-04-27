@@ -1,10 +1,11 @@
 // Script Node.js pour créer un compte admin dans NeDB
+require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const userDB = require('../models/User');
 
-const name = 'Adnane';
-const email = 'adnane@email.com';
-const password = 'adnane123'; // Changez ce mot de passe après la création !
+const name = 'Fares';
+const email = 'fares@email.com';
+const password = 'fares123'; // Changez ce mot de passe après la création !
 const role = 'admin';
 
 userDB.findOne({ email }, async (err, existing) => {
